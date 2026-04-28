@@ -92,7 +92,7 @@ function generateLevel(num) {
   branches = [];
   enemies = [];
 
-  const branchCount = 6 + Math.min(num, 10);
+  const branchCount = 8 + Math.min(num, 10);
   const gapY = Math.max(60, 120 - num * 4);
 
   for (let i = 0; i < branchCount; i++) {
@@ -286,7 +286,15 @@ function loop() {
 
 function init() {
   generateLevel(level);
-  resetPlayer();
+  // Place player on the bottom-most branch so they start on solid ground
+  if (branches.length > 0) {
+    const base = branches[0]; // first created is the lowest
+    player.x = base.x + (base.w - player.w) / 2;
+    player.y = base.y - player.h;
+    player.onGround = true;
+  } else {
+    resetPlayer();
+  }
   loop();
 }
 
